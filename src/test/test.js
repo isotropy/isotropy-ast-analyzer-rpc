@@ -39,7 +39,12 @@ function clean(obj) {
 describe("isotropy-ast-analyzer-rpc", () => {
   function run([description, dir, opts]) {
     it(`${description}`, () => {
-      const fixturePath = path.resolve(__dirname, "fixtures", dir, `fixture.js`);
+      const fixturePath = path.resolve(
+        __dirname,
+        "fixtures",
+        dir,
+        `fixture.js`
+      );
       const outputPath = path.resolve(__dirname, "fixtures", dir, `output.js`);
       const expected = require(`./fixtures/${dir}/expected`);
       const pluginInfo = makePlugin(opts);

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "mocha dist/test/test.js",
-    "debug": "mocha dist/test/test.js --debug-brk"
+    "debug": "mocha dist/test/test.js --inspect-brk"
   },
   "main": "dist/isotropy-ast-analyzer-rpc.js",
   "dependencies": {

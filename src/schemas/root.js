@@ -1,17 +1,21 @@
 import { Match, Skip } from "chimpanzee";
 
 export default function(state, analysisState) {
-
   const identifier = (path, key, parents, parentKeys) => context => {
     const env = { path, key, parents, parentKeys };
     return path.type === "Identifier"
       ? (() => {
+          debugger;
           const importBinding = analysisState.importBindings.find(
             b => b.binding.identifier.name === path.node.name
           );
-          return importBinding && importBinding.binding.referencePaths.includes(path)
-            ? new Match({ identifier: path.node.name, module: importBinding.module }, env)
-            : new Skip(`Did not match any known database modules.`, env);
+          return importBinding &&
+            importBinding.binding.referencePaths.includes(path)
+            ? new Match(
+                { identifier: path.node.name, module: importBinding.module },
+                env
+              )
+            : new Skip(`Did not match any known rpc modules.`, env);
         })()
       : new Skip(`Root node is not an Identifier`, env);
   };

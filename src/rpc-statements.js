@@ -1,8 +1,12 @@
 export function createCollection(source) {
-  return { type: "rpc", ...source }
+  return { ...source };
 }
 
-export function createRPC(source, procedure, args = null) {
-  if (args) return ({ ...source, ...procedure, ...args })
-  return ({ ...source, ...procedure })
+export function createMemberExpression(node) {
+  return { type: "MemberExpression", ...node }
+}
+
+export function rpcPost(source, procedure, args = null) {
+  if (args) return { type: "rpc_post", ...source, ...procedure, ...args };
+  return { type: "rpc_post", ...source, ...procedure };
 }

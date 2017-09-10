@@ -1,11 +1,8 @@
 module.exports = {
-  type: "rpc",
-  module: "todosServerModule",
+  type: "rpc_post",
+  collectionArray: ["postsAPI"],
   identifier: "myServer",
-  collection: "postsAPI",
-  procedure: "getTodosOf",
-  args: {
-    type: "Identifier",
-    name: "id"
-  }
+  module: "todosServerModule",
+  function: "getTodosOf",
+  args: { type: "Identifier", name: "id" }
 };
