@@ -33,76 +33,18 @@ export default function(state, analysisState) {
       build: rpc => context => result =>
         result instanceof Match
           ? (() => {
-              const analysisBreakDown = identifyCollectionVariables(
-                result.value
-              );
               debugger;
               return result.value.arguments[0]
                 ? rpcPost(
-                    {
-                      collectionArray: analysisBreakDown.collectionArray,
-                      ...analysisBreakDown.deepestKnownObject
-                    },
+                    result.value.object,
                     { function: result.value.procedure },
                     { args: clean(result.value.arguments[0]) }
                   )
-                : rpcPost(
-                    {
-                      collectionArray: analysisBreakDown.collectionArray,
-                      ...analysisBreakDown.deepestKnownObject
-                    },
-                    { function: result.value.procedure }
-                  );
+                : rpcPost(result.value.object, {
+                    function: result.value.procedure
+                  });
             })()
           : result
     }
   );
 }
-
-function identifyCollectionVariables(
-  currentLocation = result,
-  collectionArray = [],
-  deepestKnownObject = {}
-) {
-  let deeperLevelExists = false;
-  for (let key in currentLocation) {
-    if (key === "collection") collectionArray.push(currentLocation.collection);
-    if (key === "object") {
-      deeperLevelExists = true;
-      deepestKnownObject = currentLocation.object;
-    }
-  }
-  if (deeperLevelExists)
-    return identifyCollectionVariables(
-      currentLocation.object,
-      collectionArray,
-      deepestKnownObject
-    );
-  delete deepestKnownObject.collection;
-  return { collectionArray, deepestKnownObject };
-}
-
-// function identifyCollectionVariables(
-//   currentLocation,
-//   analysisResult,
-//   deepestKnownObject = {},
-//   nestCount = 0
-// ) {
-//   let deeperLevelExists = false;
-//   for (let key in currentLocation) {
-//     if (key === "object") {
-//       deeperLevelExists = true;
-//       deepestKnownObject = currentLocation.object;
-//     }
-//   }
-//   if (deeperLevelExists)
-//     return identifyCollectionVariables(
-//       currentLocation.object,
-//       analysisResult,
-//       deepestKnownObject,
-//       ++nestCount
-//     );
-//   const deepestObjectProp = ".object".repeat(nestCount)
-//   eval ("delete(analysisResult)" + deepestObjectProp)
-//   return { analysisResult, deepestKnownObject };
-// }

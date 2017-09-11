@@ -7,7 +7,10 @@ export default function(state, analysisState) {
   return composite(
     {
       type: "MemberExpression",
-      object: wrap(root(state, analysisState), { key: "root", selector: "path" }),
+      object: wrap(root(state, analysisState), {
+        key: "root",
+        selector: "path"
+      }),
       property: {
         type: "Identifier",
         name: capture("collection")
@@ -15,6 +18,7 @@ export default function(state, analysisState) {
     },
     {
       build: obj => context => result => {
+        debugger;
         return result instanceof Match
           ? createCollection({
               identifier: result.value.root.identifier,

@@ -1,6 +1,6 @@
 module.exports = {
   type: "rpc_post",
-  collectionArray: ["postsAPI"],
+  collection: "postsAPI",
   identifier: "myServer",
   module: "todosServerModule",
   function: "getTodosOf",

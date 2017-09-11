@@ -1,6 +1,6 @@
 module.exports = {
   type: "rpc_post",
-  collectionArray: ["postsAPI", "backUpLogs", "legacyServer"],
+  collectionArray: ["legacyServer", "backUpLogs", "postsAPI"],
   identifier: "myServer",
   module: "todosServerModule",
   function: "getAllDones"
