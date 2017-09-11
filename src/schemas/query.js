@@ -16,25 +16,20 @@ export default function query(state, analysisState) {
     },
     {
       build: obj => context => result => {
-        if (result instanceof Match) {
-          let collectionArray, object;
-          // Checks if the last match was the root(collection)
-          if (!result.value.object.collectionArray)
-            collectionArray = [
-              result.value.object.collection,
-              result.value.collection
-            ];
-          else
-            collectionArray = result.value.object.collectionArray.concat(
-              result.value.collection
-            );
-          object = {
-            identifier: result.value.object.identifier,
-            module: result.value.object.module
-          };
-          return { collectionArray, ...object };
-        }
-        return result;
+        return result instanceof Match
+          ? (() => {
+              return {
+                // checks if the last match was root(collection)
+                collectionArray: !result.value.object.collectionArray
+                  ? [result.value.object.collection, result.value.collection]
+                  : result.value.object.collectionArray.concat(
+                      result.value.collection
+                    ),
+                identifier: result.value.object.identifier,
+                module: result.value.object.module
+              };
+            })()
+          : result;
       }
     }
   );

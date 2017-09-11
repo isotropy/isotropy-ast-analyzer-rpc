@@ -18,7 +18,6 @@ export default function(state, analysisState) {
     },
     {
       build: obj => context => result => {
-        debugger;
         return result instanceof Match
           ? createCollection({
               identifier: result.value.root.identifier,

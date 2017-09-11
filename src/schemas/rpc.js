@@ -33,7 +33,6 @@ export default function(state, analysisState) {
       build: rpc => context => result =>
         result instanceof Match
           ? (() => {
-              debugger;
               return result.value.arguments[0]
                 ? rpcPost(
                     result.value.object,
