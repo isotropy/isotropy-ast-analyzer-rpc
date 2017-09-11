@@ -76,6 +76,7 @@ describe("isotropy-ast-analyzer-rpc", () => {
 
   const tests = [
     ["rpc", "rpc"],
+    ["rpc-deep", "rpc-deep"],
     ["rpc-args", "rpc-args"]
   ];
 

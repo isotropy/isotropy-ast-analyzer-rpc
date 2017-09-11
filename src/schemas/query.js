@@ -9,19 +9,17 @@ export default function query(state, analysisState) {
     {
       type: "MemberExpression",
       object: source([collection, query])(state, analysisState),
-      // property: {
-      //   type: "Identifier",
-      //   name: capture("collection")
-      // }
-      property: capture()
+      property: {
+        type: "Identifier",
+        name: capture("collection")
+      }
     },
     {
       build: obj => context => result => {
         return result instanceof Match
           ? createMemberExpression({
               object: result.value.object,
-              // collection: result.value.collection
-              property: result.value.property
+              collection: result.value.collection
             })
           : result;
       }
