@@ -1,5 +1,4 @@
 import { capture, wrap, Match } from "chimpanzee";
-import { createMemberExpression } from "../rpc-statements";
 import composite from "../chimpanzee-utils/composite";
 import { source } from "../chimpanzee-utils";
 import { collection } from "./";

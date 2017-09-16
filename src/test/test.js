@@ -54,7 +54,7 @@ describe("isotropy-ast-analyzer-rpc", () => {
           [
             pluginInfo.plugin,
             {
-              databaseModules: {
+              rpcModules: {
                 todosServerModule: "./dist/test/fixtures/my-server",
                 backupServerModule: "./dist/test/fixtures/backup-server"
               }
