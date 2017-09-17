@@ -1,5 +1,5 @@
 module.exports = {
-  type: "rpc_post",
+  type: "post",
   collectionArray: ["legacyServer", "backUpLogs", "postsAPI"],
   identifier: "myServer",
   module: "todosServerModule",

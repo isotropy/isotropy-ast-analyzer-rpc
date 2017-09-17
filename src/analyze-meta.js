@@ -3,23 +3,44 @@ import path from "path";
 export default function(analysisState) {
   return {
     analyzeImportDeclaration(babelPath, state) {
-      const rpcModules = Object.keys(state.opts.rpcModules).map(key => ({
-        key,
-        value: path.resolve(state.opts.rpcModules[key])
-      }));
+      // Incorrect config
+      if (!state.opts.projects) return false;
 
       const moduleName = babelPath.get("source").node.value;
-      const resolvedName = path.resolve(path.dirname(state.file.opts.filename), moduleName);
+      const resolvedName = path.resolve(
+        path.dirname(state.file.opts.filename),
+        moduleName
+      );
 
-      const rpcModule = rpcModules.find(p => p.value === resolvedName);
-      if (rpcModule) {
-        const specifier = babelPath.get("specifiers.0").node.local.name;
-        analysisState.importBindings = analysisState.importBindings.concat({
-          module: rpcModule.key,
-          binding: babelPath.scope.bindings[specifier]
-        });
-        return true
-      }
+      let absolutePath = null;
+
+      const rpcProject = state.opts.projects.find(project => {
+        const projectDir = project.dir.startsWith("./")
+          ? project.dir
+          : "./" + project.dir;
+        absolutePath = path.resolve(projectDir) + "/";
+        return resolvedName.startsWith(absolutePath);
+      });
+
+      // Not a fs project
+      if (!rpcProject) return false;
+      rpcProject.absolutePath = absolutePath;
+
+      const rpcModule = rpcProject.modules.find(m => {
+        absolutePath =
+          (rpcProject.absolutePath + m.source).replace(/\/\//g, "/") + "/";
+        return resolvedName.startsWith(absolutePath);
+      });
+
+      // Current path not listed in modules
+      if (!rpcModule) return false;
+
+      const specifier = babelPath.get("specifiers.0").node.local.name;
+      analysisState.importBindings = analysisState.importBindings.concat({
+        module: rpcModule.locations,
+        binding: babelPath.scope.bindings[specifier]
+      });
+      return true;
     }
   };
 }

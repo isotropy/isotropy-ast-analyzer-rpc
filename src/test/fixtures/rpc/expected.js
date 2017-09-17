@@ -1,7 +1,7 @@
 module.exports = {
-  type: "rpc_post",
+  type: "post",
   collection: "postsAPI",
   identifier: "myServer",
-  module: "todosServerModule",
+  module: "http://www.poe3.com",
   function: "getAllTodos"
 };

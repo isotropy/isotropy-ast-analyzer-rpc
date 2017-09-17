@@ -21,7 +21,6 @@ export default function(opts) {
       visitor: {
         ImportDeclaration(path, state) {
           analyze(analyzers.meta.analyzeImportDeclaration, path, state);
-          path.skip;
         },
         CallExpression(path, state) {
           analyze(analyzers.analyze.analyzeCallExpression, path, state);

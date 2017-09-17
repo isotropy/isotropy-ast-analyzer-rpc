@@ -54,10 +54,19 @@ describe("isotropy-ast-analyzer-rpc", () => {
           [
             pluginInfo.plugin,
             {
-              rpcModules: {
-                todosServerModule: "./dist/test/fixtures/my-server",
-                backupServerModule: "./dist/test/fixtures/backup-server"
-              }
+              projects: [
+                {
+                  dir: "dist/test",
+                  modules: [
+                    {
+                      source: "fixtures",
+                      locations: [
+                        { name: "postsAPI", path: "http://www.poe3.com" }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "transform-object-rest-spread"
