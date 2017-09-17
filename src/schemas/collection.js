@@ -21,9 +21,7 @@ export default function(state, analysisState) {
         return result instanceof Match
           ? createCollection({
               identifier: result.value.root.identifier,
-              module: result.value.root.module.find(
-                m => m.name === result.value.collection
-              ).path,
+              module: result.value.root.module,
               collection: result.value.collection
             })
           : result;

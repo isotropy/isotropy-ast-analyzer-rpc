@@ -37,7 +37,7 @@ export default function(analysisState) {
 
       const specifier = babelPath.get("specifiers.0").node.local.name;
       analysisState.importBindings = analysisState.importBindings.concat({
-        module: rpcModule.locations,
+        module: rpcModule.url,
         binding: babelPath.scope.bindings[specifier]
       });
       return true;
