@@ -5,12 +5,10 @@ export default function(analysisState) {
     analyzeImportDeclaration(babelPath, state) {
       // Incorrect config
       if (!state.opts.projects) return false;
-
+      debugger;
       const moduleName = babelPath.get("source").node.value;
-      const resolvedName = path.resolve(
-        path.dirname(state.file.opts.filename),
-        moduleName
-      );
+      const resolvedName =
+        path.resolve(path.dirname(state.file.opts.filename), moduleName) + "/";
 
       let absolutePath = null;
 
@@ -29,7 +27,7 @@ export default function(analysisState) {
       const rpcModule = rpcProject.modules.find(m => {
         absolutePath =
           (rpcProject.absolutePath + m.source).replace(/\/\//g, "/") + "/";
-        return resolvedName.startsWith(absolutePath);
+        return resolvedName === absolutePath;
       });
 
       // Current path not listed in modules
