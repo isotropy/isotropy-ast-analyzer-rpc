@@ -7,8 +7,10 @@ export default function(analysisState) {
       if (!state.opts.projects) return false;
       debugger;
       const moduleName = babelPath.get("source").node.value;
-      const resolvedName =
-        path.resolve(path.dirname(state.file.opts.filename), moduleName) + "/";
+      const resolvedName = path.resolve(
+        path.dirname(state.file.opts.filename),
+        moduleName
+      );
 
       let absolutePath = null;
 
@@ -23,12 +25,10 @@ export default function(analysisState) {
       // Not a fs project
       if (!rpcProject) return false;
       rpcProject.absolutePath = absolutePath;
-
-      const rpcModule = rpcProject.modules.find(m => {
-        absolutePath =
-          (rpcProject.absolutePath + m.source).replace(/\/\//g, "/") + "/";
-        return resolvedName === absolutePath;
-      });
+      debugger;
+      const rpcModule = rpcProject.modules.find(
+        m => rpcProject.absolutePath + m.source === resolvedName
+      );
 
       // Current path not listed in modules
       if (!rpcModule) return false;
