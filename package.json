@@ -1,11 +1,11 @@
 {
-  "name": "isotropy-ast-analyzer-rpc",
+  "name": "isotropy-ast-analyzer-webservices",
   "version": "0.0.1",
   "description": "RPC AST Analyzer for the Isotropy Project",
-  "author": "Arivanandan<uarivanandan@gmail.com>",
+  "author": "Isotropy Team<isotropy@agilehead.com>",
   "contributors": [
-    "Jeswin Kumar<jeswinpk@agilehead.com>",
-    "Arivanandan<uarivanandan@gmail.com>"
+    "Arivanandan<uarivanandan@gmail.com>",
+    "Jeswin Kumar<jeswinpk@agilehead.com>"
   ],
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,6 @@
     "debug": "mocha dist/test/test.js --inspect-brk"
   },
   "dependencies": {
-    "ast-crumbs": "0.0.2",
     "chimpanzee": "0.0.50",
     "lazily": "^0.0.17",
     "ramda": "^0.23.0"
