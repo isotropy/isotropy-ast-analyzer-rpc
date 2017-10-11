@@ -3,9 +3,6 @@ import makeAnalyzer from "./make-analyzer";
 
 export default function(analysisState) {
   return {
-    /*
-    Ending with a method call
-    */
     analyzeCallExpression(path, state) {
       return makeAnalyzer(
         [schemas.rpc],
@@ -13,12 +10,9 @@ export default function(analysisState) {
         state,
         analysisState
       );
-    },
-    /*
-      Ending with a member expression
-    */
-    analyzeMemberExpression(path, state) {
-      return makeAnalyzer([schemas.collection], path, state, analysisState);
     }
+    // analyzeMemberExpression(path, state) {
+    //   return makeAnalyzer([schemas.collection], path, state, analysisState);
+    // }
   };
 }

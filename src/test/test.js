@@ -4,37 +4,9 @@ import fs from "fs";
 import path from "path";
 import makePlugin from "./plugin";
 import sourceMapSupport from "source-map-support";
+import clean from "../chimpanzee-utils/node-cleaner";
 
 sourceMapSupport.install();
-
-function clean(obj) {
-  if (typeof obj !== "object") {
-    return obj;
-  } else {
-    if (Array.isArray(obj)) {
-      return obj.map(o => clean(o));
-    } else {
-      const newObj = {};
-      for (const key in obj) {
-        if (
-          ![
-            "start",
-            "end",
-            "loc",
-            "computed",
-            "shorthand",
-            "extra",
-            "__clone",
-            "path"
-          ].includes(key)
-        ) {
-          newObj[key] = clean(obj[key]);
-        }
-      }
-      return newObj;
-    }
-  }
-}
 
 describe("isotropy-ast-analyzer-webservices", () => {
   function run([description, dir, opts]) {
@@ -45,44 +17,49 @@ describe("isotropy-ast-analyzer-webservices", () => {
         dir,
         `fixture.js`
       );
-      const outputPath = path.resolve(__dirname, "fixtures", dir, `output.js`);
-      const expected = require(`./fixtures/${dir}/expected`);
       const pluginInfo = makePlugin(opts);
 
-      const babelResult = babel.transformFileSync(fixturePath, {
-        plugins: [
-          [
-            pluginInfo.plugin,
-            {
-              projects: [
-                {
-                  dir: "dist/test/fixtures",
-                  modules: [{ source: "my-server", url: "http://www.poe3.com" }]
-                }
-              ]
-            }
+      const callWrapper = () => {
+        babel.transformFileSync(fixturePath, {
+          plugins: [
+            [
+              pluginInfo.plugin,
+              {
+                projects: [
+                  {
+                    dir: "dist/test/fixtures",
+                    modules: [
+                      {
+                        source: "dist/test/server/my-server",
+                        url: "http://www.poe3.com"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "transform-object-rest-spread"
           ],
-          "transform-object-rest-spread"
-        ],
-        parserOpts: {
-          sourceType: "module",
-          allowImportExportEverywhere: true
-        },
-        babelrc: false
-      });
-      const result = pluginInfo.getResult();
+          parserOpts: {
+            sourceType: "module",
+            allowImportExportEverywhere: true
+          },
+          babelrc: false
+        });
+        return pluginInfo.getResult();
+      };
+
+      const expected = require(`./fixtures/${dir}/expected`);
+      const result = callWrapper();
       const actual = clean(result.analysis);
       actual.should.deepEqual(expected);
     });
   }
 
   const tests = [
-    ["rpc", "rpc"],
+    ["rpc-import-all", "rpc-import-all"],
+    ["rpc-import-default", "rpc-import-default"],
     ["rpc-deep", "rpc-deep"],
     ["rpc-args", "rpc-args"]
-  ];
-
-  for (const test of tests) {
-    run(test);
-  }
+  ].forEach(test => run(test));
 });

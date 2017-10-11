@@ -5,30 +5,30 @@ export default function(analysisState) {
     analyzeImportDeclaration(babelPath, state) {
       // Incorrect config
       if (!state.opts.projects) return false;
-      debugger;
-      const moduleName = babelPath.get("source").node.value;
-      const resolvedName = path.resolve(
-        path.dirname(state.file.opts.filename),
-        moduleName
-      );
 
-      let absolutePath = null;
-
+      // Checks if file being translated is a project
       const rpcProject = state.opts.projects.find(project => {
         const projectDir = project.dir.startsWith("./")
           ? project.dir
           : "./" + project.dir;
-        absolutePath = path.resolve(projectDir) + "/";
-        return resolvedName.startsWith(absolutePath);
+        const absolutePath = path.resolve(projectDir) + "/";
+        return state.file.opts.filename.startsWith(absolutePath);
       });
 
-      // Not a fs project
+      // Not a rpc project
       if (!rpcProject) return false;
-      rpcProject.absolutePath = absolutePath;
-      debugger;
-      const rpcModule = rpcProject.modules.find(
-        m => rpcProject.absolutePath + m.source === resolvedName
-      );
+
+      const moduleName = babelPath.get("source").node.value;
+      const resolvedName =
+        path.resolve(path.dirname(state.file.opts.filename), moduleName) + "/";
+
+      const rpcModule = rpcProject.modules.find(m => {
+        const sourceDir = m.source.startsWith("./")
+          ? m.source
+          : "./" + m.source;
+        const absolutePath = path.resolve(sourceDir) + "/";
+        return absolutePath === resolvedName;
+      });
 
       // Current path not listed in modules
       if (!rpcModule) return false;
