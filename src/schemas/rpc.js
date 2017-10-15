@@ -34,9 +34,10 @@ export default function(state, analysisState) {
       arguments: optional(capture("args"))
     },
     {
-      build: rpc => context => result =>
-        result instanceof Match
+      build: rpc => context => _result =>
+        _result instanceof Match
           ? (() => {
+              //const result = 
               if (!result.value.procedure) {
                 // Recalibration in case of no nesting.
                 result.value.object = result.value.callee;
