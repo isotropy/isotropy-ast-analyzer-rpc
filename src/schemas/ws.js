@@ -11,7 +11,7 @@ import {
 import { source } from "../chimpanzee-utils";
 import { collection } from "./";
 import { query } from "./";
-import { rpcPost } from "../rpc-statements";
+import { wsPost } from "../ws-statements";
 import composite from "../chimpanzee-utils/composite";
 import clean from "../chimpanzee-utils/node-cleaner";
 
@@ -37,7 +37,7 @@ export default function(state, analysisState) {
   );
 
   return any(schemas, {
-    build: rpc => context => _result =>
+    build: ws => context => _result =>
       _result instanceof Match
         ? (() => {
             console.log(_result)
@@ -51,12 +51,12 @@ export default function(state, analysisState) {
             }
 
             return result.value.arguments[0]
-              ? rpcPost(
+              ? wsPost(
                   result.value.object,
                   { function: result.value.procedure },
                   { args: clean(result.value.arguments[0]) }
                 )
-              : rpcPost(result.value.object, {
+              : wsPost(result.value.object, {
                   function: result.value.procedure
                 });
           })()

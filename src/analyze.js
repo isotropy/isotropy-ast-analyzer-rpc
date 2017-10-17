@@ -5,7 +5,7 @@ export default function(analysisState) {
   return {
     analyzeCallExpression(path, state) {
       return makeAnalyzer(
-        [schemas.rpc],
+        [schemas.ws],
         path,
         state,
         analysisState

@@ -8,7 +8,7 @@ export default function(analysisState) {
         ? false
         : (() => {
             // Checks if file being translated is a project
-            const rpcProject = state.opts.projects.find(project => {
+            const wsProject = state.opts.projects.find(project => {
               const projectDir = project.dir.startsWith("./")
                 ? project.dir
                 : "./" + project.dir;
@@ -16,7 +16,7 @@ export default function(analysisState) {
               return state.file.opts.filename.startsWith(absolutePath);
             });
 
-            return !rpcProject
+            return !wsProject
               ? false
               : (() => {
                   const moduleName = babelPath.get("source").node.value;
@@ -26,7 +26,7 @@ export default function(analysisState) {
                       moduleName
                     ) + "/";
 
-                  const rpcModule = rpcProject.modules.find(m => {
+                  const wsModule = wsProject.modules.find(m => {
                     const sourceDir = m.source.startsWith("./")
                       ? m.source
                       : "./" + m.source;
@@ -35,14 +35,14 @@ export default function(analysisState) {
                   });
 
                   // Current path not listed in modules
-                  return !rpcModule
+                  return !wsModule
                     ? false
                     : (() => {
                         const specifier = babelPath.get("specifiers.0").node
                           .local.name;
                         analysisState.importBindings = analysisState.importBindings.concat(
                           {
-                            module: rpcModule.url,
+                            module: wsModule.url,
                             binding: babelPath.scope.bindings[specifier]
                           }
                         );

@@ -14,7 +14,7 @@ export default function(state, analysisState) {
                 { identifier: path.node.name, module: importBinding.module },
                 env
               )
-            : new Skip(`Did not match any known rpc modules.`, env);
+            : new Skip(`Did not match any known ws modules.`, env);
         })()
       : new Skip(`Root node is not an Identifier`, env);
   };

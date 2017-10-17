@@ -1,7 +1,7 @@
 {
   "name": "isotropy-ast-analyzer-webservices",
   "version": "0.0.3",
-  "description": "RPC AST Analyzer for the Isotropy Project",
+  "description": "Web Services AST Analyzer for the Isotropy Project",
   "author": "Isotropy Team<isotropy@agilehead.com>",
   "contributors": [
     "Arivanandan<uarivanandan@gmail.com>",

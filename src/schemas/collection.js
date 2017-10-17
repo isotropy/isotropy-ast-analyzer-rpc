@@ -1,5 +1,5 @@
 import { capture, wrap, Match } from "chimpanzee";
-import { createCollection } from "../rpc-statements";
+import { createCollection } from "../ws-statements";
 import { root } from "./";
 import composite from "../chimpanzee-utils/composite";
 
