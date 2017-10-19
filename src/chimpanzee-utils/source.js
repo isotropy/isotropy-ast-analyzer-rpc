@@ -1,14 +1,20 @@
-import { parse, any, builtins as b } from "chimpanzee";
+import { parse, any, builtins as $ } from "chimpanzee";
 
 /*
   Defers eval of schema until we need it.
   This is necessary to avoid infinite recursion;
   schemas might contain schemas which contain themselves.
 */
-export default function(schemas) {
-  const defer = schema => (state, analysisState) => (obj, key, parents, parentKeys) => context =>
-    parse(schema(state, analysisState))(obj, key, parents, parentKeys)(context);
-
+export default function(_schemas, params) {
   return (state, analysisState) =>
-    any(schemas.map(schema => defer(schema)(state, analysisState)), { selector: "path" });
+    $.func(
+      (obj, key, parents, parentKeys) => context => {
+        const schemas = typeof _schemas === "function" ? _schemas() : _schemas;
+        const anySchema = any(
+          schemas.map(schema => schema(state, analysisState))
+        );
+        return parse(anySchema)(obj, key, parents, parentKeys)(context);
+      },
+      params
+    );
 }

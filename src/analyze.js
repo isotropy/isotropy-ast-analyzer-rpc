@@ -10,7 +10,7 @@ export default function(analysisState) {
         state,
         analysisState
       );
-    }
+    },
     // analyzeMemberExpression(path, state) {
     //   return makeAnalyzer([schemas.collection], path, state, analysisState);
     // }

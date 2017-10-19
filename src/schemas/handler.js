@@ -13,19 +13,18 @@ export default function(state, analysisState) {
       }),
       property: {
         type: "Identifier",
-        name: capture("collection")
+        name: capture("handler")
       }
     },
     {
-      build: obj => context => result => {
-        return result instanceof Match
+      build: obj => context => result =>
+        result instanceof Match
           ? createCollection({
               identifier: result.value.root.identifier,
               module: result.value.root.module,
               collection: result.value.collection
             })
-          : result;
-      }
+          : result
     }
   );
 }

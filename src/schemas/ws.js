@@ -9,57 +9,69 @@ import {
   builtins as $
 } from "chimpanzee";
 import { source } from "../chimpanzee-utils";
-import { collection } from "./";
-import { query } from "./";
+import root from "./root";
 import { wsPost } from "../ws-statements";
 import composite from "../chimpanzee-utils/composite";
 import clean from "../chimpanzee-utils/node-cleaner";
 
-export default function(state, analysisState) {
-  const callees = [
+function memberExp(state, analysisState) {
+  return composite(
     {
       type: "MemberExpression",
-      object: source([collection, query])(state, analysisState),
+      object: source(() => [root, wsSchema])(state, analysisState),
       property: {
         type: "Identifier",
-        name: capture("procedure")
+        name: capture("name")
       }
     },
-    source([collection])(state, analysisState)
-  ];
-
-  const schemas = callees.map(callee =>
-    composite({
-      type: "CallExpression",
-      callee,
-      arguments: optional(capture("args"))
-    })
+    {
+      build: () => () => result =>
+        result instanceof Match
+          ? result.value.object.path
+            ? {
+                path: [
+                  ...result.value.object.path,
+                  { type: "MemberExpression", name: result.value.name }
+                ]
+              }
+            : { type: "MemberExpression", name: result.value.name }
+          : result
+    }
   );
+}
 
-  return any(schemas, {
-    build: ws => context => _result =>
+function callExp(state, analysisState) {
+  return composite(
+    {
+      type: "CallExpression",
+      callee: source(() => [root, wsSchema])(state, analysisState),
+      arguments: optional(capture("args"))
+    },
+    {
+      build: obj => () => result =>
+        console.log("----", obj.node, result) || result instanceof Match
+          ? result.value.callee.path
+            ? {
+                path: [
+                  ...result.value.callee.path,
+                  { type: "CallExpression", args: result.value.args }
+                ]
+              }
+            : { type: "CallExpression", args: result.value.args }
+          : result
+    }
+  );
+}
+
+export default function(state, analysisState) {
+  const wsSchema = any([memberExp, callExp], {
+    build: () => () => _result =>
       _result instanceof Match
         ? (() => {
-            console.log(_result)
-            //const result =
-            if (!result.value.procedure) {
-              // Recalibration in case of no nesting.
-              result.value.object = result.value.callee;
-              delete result.value.callee;
-              result.value.procedure = result.value.object.collection;
-              delete result.value.object.collection;
-            }
-
-            return result.value.arguments[0]
-              ? wsPost(
-                  result.value.object,
-                  { function: result.value.procedure },
-                  { args: clean(result.value.arguments[0]) }
-                )
-              : wsPost(result.value.object, {
-                  function: result.value.procedure
-                });
+            //do stuff here...
           })()
-        : result
+        : _result
   });
+
+  return wsSchema;
 }
