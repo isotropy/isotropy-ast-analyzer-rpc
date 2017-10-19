@@ -52,13 +52,14 @@ describe("isotropy-ast-analyzer-webservices", () => {
       const expected = require(`./fixtures/${dir}/expected`);
       const result = callWrapper();
       const actual = clean(result.analysis);
+      console.log(result.analysis);
       actual.should.deepEqual(expected);
     });
   }
 
   const tests = [
     // ["ws-import-all", "ws-import-all"],
-    ["ws-import-default", "ws-import-default"],
+    ["ws-import-default", "ws-import-default"]
     // ["ws-deep", "ws-deep"],
     // ["ws-args", "ws-args"]
   ].forEach(test => run(test));

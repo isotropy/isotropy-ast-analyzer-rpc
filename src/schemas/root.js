@@ -5,7 +5,6 @@ export default function(state, analysisState) {
     const env = { path, key, parents, parentKeys };
     return path.type === "Identifier"
       ? (() => {
-          debugger;
           const importBinding = analysisState.importBindings.find(
             b => b.binding.identifier.name === path.node.name
           );

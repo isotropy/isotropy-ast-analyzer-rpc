@@ -13,8 +13,9 @@ export default function(_schemas, params) {
         const anySchema = any(
           schemas.map(schema => schema(state, analysisState))
         );
-        return parse(anySchema)(obj, key, parents, parentKeys)(context);
+        const item =  parse(anySchema)(obj, key, parents, parentKeys)(context);
+        return item;
       },
-      params
+      params || { selector: "path" },
     );
 }

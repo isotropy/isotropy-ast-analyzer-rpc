@@ -13,6 +13,7 @@ import root from "./root";
 import { wsPost } from "../ws-statements";
 import composite from "../chimpanzee-utils/composite";
 import clean from "../chimpanzee-utils/node-cleaner";
+import { print } from "../tools/debug-util";
 
 function memberExp(state, analysisState) {
   return composite(
@@ -34,7 +35,7 @@ function memberExp(state, analysisState) {
                   { type: "MemberExpression", name: result.value.name }
                 ]
               }
-            : { type: "MemberExpression", name: result.value.name }
+            : { path: [{ type: "MemberExpression", name: result.value.name }] }
           : result
     }
   );
@@ -49,7 +50,7 @@ function callExp(state, analysisState) {
     },
     {
       build: obj => () => result =>
-        console.log("----", obj.node, result) || result instanceof Match
+        result instanceof Match
           ? result.value.callee.path
             ? {
                 path: [
@@ -57,21 +58,17 @@ function callExp(state, analysisState) {
                   { type: "CallExpression", args: result.value.args }
                 ]
               }
-            : { type: "CallExpression", args: result.value.args }
+            : { path: [{ type: "CallExpression", args: result.value.args }] }
           : result
     }
   );
 }
 
-export default function(state, analysisState) {
-  const wsSchema = any([memberExp, callExp], {
+const wsSchema = function(state, analysisState) {
+  return any([memberExp(state, analysisState), callExp(state, analysisState)], {
     build: () => () => _result =>
-      _result instanceof Match
-        ? (() => {
-            //do stuff here...
-          })()
-        : _result
+      _result instanceof Match ? { path: _result.value.path } : _result
   });
+};
 
-  return wsSchema;
-}
+export default wsSchema;

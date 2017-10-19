@@ -13,7 +13,7 @@
     "debug": "mocha dist/test/test.js --inspect-brk"
   },
   "dependencies": {
-    "chimpanzee": "0.0.50",
+    "chimpanzee": "^0.0.56",
     "lazily": "^0.0.17",
     "ramda": "^0.23.0"
   },
