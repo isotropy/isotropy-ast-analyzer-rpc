@@ -15,14 +15,21 @@ export default function(state, analysisState) {
                 const module = importBinding.module;
                 const identifier = path.node.name;
 
+                const httpMethods = module.httpMethods || {
+                  get: ["$get"],
+                  post: ["$post"],
+                  put: ["$put"],
+                  del: ["$del"],
+                  head: ["$head"],
+                  patch: ["$patch"]
+                };
+
                 const httpMethod =
-                  (module.httpMethods &&
-                    Object.keys(module.httpMethods).find(
-                      method =>
-                        module.httpMethods[method] &&
-                        module.httpMethods[method].includes(identifier)
-                    )) ||
-                  "get";
+                  Object.keys(httpMethods).find(
+                    method =>
+                      httpMethods[method] &&
+                      httpMethods[method].includes(identifier)
+                  ) || "get";
 
                 return new Match(
                   {
