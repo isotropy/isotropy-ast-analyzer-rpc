@@ -19,29 +19,44 @@ describe("isotropy-ast-analyzer-webservices", () => {
       );
       const pluginInfo = makePlugin(opts);
 
+      const config1 = {
+        projects: [
+          {
+            dir: "dist/test/fixtures",
+            modules: [
+              {
+                source: "dist/test/server/my-server",
+                remoteUrl: "http://www.poe3.com",
+                httpMethods: {
+                  get: ["$get"],
+                  post: ["$post"]
+                }
+              }
+            ]
+          }
+        ]
+      };
+
+      const config2 = {
+        projects: [
+          {
+            dir: "dist/test/fixtures",
+            modules: [
+              {
+                source: "dist/test/server/my-server",
+                remoteUrl: "http://www.poe3.com"
+              }
+            ]
+          }
+        ]
+      };
+
+      const config = opts && opts.missingHttpMethods ? config2 : config1;
+
       const callWrapper = () => {
         babel.transformFileSync(fixturePath, {
           plugins: [
-            [
-              pluginInfo.plugin,
-              {
-                projects: [
-                  {
-                    dir: "dist/test/fixtures",
-                    modules: [
-                      {
-                        source: "dist/test/server/my-server",
-                        remoteUrl: "http://www.poe3.com",
-                        httpMethods: {
-                          get: ["$get"],
-                          post: ["$post"]
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
+            [pluginInfo.plugin, config],
             "transform-object-rest-spread"
           ],
           parserOpts: {
@@ -66,6 +81,11 @@ describe("isotropy-ast-analyzer-webservices", () => {
     ["ws-call", "ws-call"],
     ["ws-get", "ws-get"],
     ["ws-default-method", "ws-default-method"],
-    ["ws-call-nested", "ws-call-nested"]
+    ["ws-call-nested", "ws-call-nested"],
+    [
+      "ws-call-missing-methods",
+      "ws-call-missing-methods",
+      { missingHttpMethods: true }
+    ]
   ].forEach(test => run(test));
 });
