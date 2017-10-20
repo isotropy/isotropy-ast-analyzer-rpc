@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "chimpanzee": "^0.0.56",
+    "isotropy-analyzer-utils": "^0.0.1",
     "lazily": "^0.0.17",
     "ramda": "^0.23.0"
   },
@@ -25,6 +26,7 @@
     "babel-preset-latest": "^6.22.0",
     "babel-preset-modern-browsers": "^7.0.0",
     "babel-preset-stage-2": "^6.22.0",
+    "isotropy-plugin-dev-utils": "^0.0.1",
     "mocha": "*",
     "should": "*",
     "source-map-support": "^0.4.8"

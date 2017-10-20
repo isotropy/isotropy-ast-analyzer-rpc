@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import makePlugin from "./plugin";
 import sourceMapSupport from "source-map-support";
-import clean from "../chimpanzee-utils/node-cleaner";
+import { clean } from "isotropy-analyzer-utils";
 
 sourceMapSupport.install();
 
@@ -31,7 +31,11 @@ describe("isotropy-ast-analyzer-webservices", () => {
                     modules: [
                       {
                         source: "dist/test/server/my-server",
-                        url: "http://www.poe3.com"
+                        remoteUrl: "http://www.poe3.com",
+                        httpMethods: {
+                          get: ["$get"],
+                          post: ["$post"]
+                        }
                       }
                     ]
                   }
@@ -52,15 +56,16 @@ describe("isotropy-ast-analyzer-webservices", () => {
       const expected = require(`./fixtures/${dir}/expected`);
       const result = callWrapper();
       const actual = clean(result.analysis);
-      console.log(result.analysis);
       actual.should.deepEqual(expected);
     });
   }
 
   const tests = [
-    // ["ws-import-all", "ws-import-all"],
-    ["ws-import-default", "ws-import-default"]
-    // ["ws-deep", "ws-deep"],
-    // ["ws-args", "ws-args"]
+    ["ws-call-simple-args", "ws-call-simple-args"],
+    ["ws-call-no-args", "ws-call-no-args"],
+    ["ws-call", "ws-call"],
+    ["ws-get", "ws-get"],
+    ["ws-default-method", "ws-default-method"],
+    ["ws-call-nested", "ws-call-nested"]
   ].forEach(test => run(test));
 });

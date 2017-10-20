@@ -26,7 +26,7 @@ export default function(analysisState) {
                       moduleName
                     ) + "/";
 
-                  const wsModule = wsProject.modules.find(m => {
+                  const module = wsProject.modules.find(m => {
                     const sourceDir = m.source.startsWith("./")
                       ? m.source
                       : "./" + m.source;
@@ -35,15 +35,16 @@ export default function(analysisState) {
                   });
 
                   // Current path not listed in modules
-                  return !wsModule
+                  return !module
                     ? false
                     : (() => {
                         const specifier = babelPath.get("specifiers.0").node
                           .local.name;
+                        const binding = babelPath.scope.bindings[specifier];
                         analysisState.importBindings = analysisState.importBindings.concat(
                           {
-                            module: wsModule.url,
-                            binding: babelPath.scope.bindings[specifier]
+                            module,
+                            binding
                           }
                         );
                         return true;
