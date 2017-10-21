@@ -1,8 +1,5 @@
 module.exports = {
-  module: {
-    source: "dist/test/server/my-server",
-    remoteUrl: "http://www.poe3.com"
-  },
+  remoteUrl: "http://www.poe3.com",
   identifier: "$get",
   httpMethod: "get",
   expressions: [

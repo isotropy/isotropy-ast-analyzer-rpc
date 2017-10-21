@@ -33,10 +33,7 @@ export default function(state, analysisState) {
 
                 return new Match(
                   {
-                    module: {
-                      source: module.source,
-                      remoteUrl: module.remoteUrl
-                    },
+                    remoteUrl: module.remoteUrl,
                     identifier,
                     httpMethod
                   },
