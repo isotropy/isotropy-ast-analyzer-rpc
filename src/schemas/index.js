@@ -10,7 +10,6 @@ import {
 } from "chimpanzee";
 import { source, composite, clean } from "isotropy-analyzer-utils";
 import root from "./root";
-import { wsPost } from "../ws-statements";
 
 export function memberExpression(state, analysisState) {
   return composite(
