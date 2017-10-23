@@ -7,7 +7,7 @@ export default function(opts) {
     const analysis = fn(path, state);
     path.skip();
     if (analysis !== undefined) {
-      _analysis = analysis.value;
+      _analysis = analysis;
     }
   }
 

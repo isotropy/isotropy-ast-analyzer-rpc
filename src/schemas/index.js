@@ -8,9 +8,8 @@ import {
   capture,
   builtins as $
 } from "chimpanzee";
-import { source, clean } from "isotropy-analyzer-utils";
+import { source, composite, clean } from "isotropy-analyzer-utils";
 import root from "./root";
-import { composite } from "chimpanzee";
 
 export function memberExpression(state, analysisState) {
   return composite(
@@ -38,15 +37,14 @@ export function memberExpression(state, analysisState) {
 }
 
 export function callExpression(state, analysisState) {
-  const schema = {
-    type: "CallExpression",
-    callee: source(() => [root, wsSchema])(state, analysisState),
-    arguments: capture("arguments")
-  };
-
-  return composite(schema, {
-    build: buildDefinition(
-      obj => () => result =>
+  return composite(
+    {
+      type: "CallExpression",
+      callee: source(() => [root, wsSchema])(state, analysisState),
+      arguments: capture("arguments")
+    },
+    {
+      build: obj => () => result =>
         result instanceof Match
           ? {
               ...result.value.callee,
@@ -55,35 +53,9 @@ export function callExpression(state, analysisState) {
                 arguments: result.value.arguments
               })
             }
-          : result,
-      {
-        schema,
-        parent: s => s.callee,
-        errors: {
-          hasParentButSkipped: () => ``
-        }
-      }
-    )
-  });
-}
-
-function buildDefinition(build, params) {
-  return params
-    ? (obj, key, parent, parentKeys) => context => result =>
-        result instanceof Skip
-          ? params.parent && params.errors && params.errors.hasParentButSkipped
-            ? (() => {
-                const parentVal = parse(parent(schema))(
-                  obj,
-                  key,
-                  parent,
-                  parentKeys
-                )(context);
-
-              })()
-            : result
           : result
-    : build;
+    }
+  );
 }
 
 const wsSchema = function(state, analysisState) {

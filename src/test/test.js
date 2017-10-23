@@ -70,7 +70,7 @@ describe("isotropy-ast-analyzer-webservices", () => {
 
       const expected = require(`./fixtures/${dir}/expected`);
       const result = callWrapper();
-      const actual = clean(result.analysis);
+      const actual = clean(result.analysis.value);
       actual.should.deepEqual(expected);
     });
   }
