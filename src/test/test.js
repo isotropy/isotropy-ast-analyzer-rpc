@@ -4,12 +4,13 @@ import fs from "fs";
 import path from "path";
 import makePlugin from "./plugin";
 import sourceMapSupport from "source-map-support";
-import { clean } from "isotropy-analyzer-utils";
+import * as utils from "isotropy-plugin-dev-utils";
+import { Match, Skip, Fault, Empty } from "chimpanzee";
 
 sourceMapSupport.install();
 
 describe("isotropy-ast-analyzer-webservices", () => {
-  function run([description, dir, opts]) {
+  function run([description, dir, resultType, opts]) {
     it(`${description}`, () => {
       const fixturePath = path.resolve(
         __dirname,
@@ -70,22 +71,38 @@ describe("isotropy-ast-analyzer-webservices", () => {
 
       const expected = require(`./fixtures/${dir}/expected`);
       const result = callWrapper();
-      const actual = clean(result.analysis.value);
-      actual.should.deepEqual(expected);
+      const actual = result.analysis;
+
+      if (resultType === "match") {
+        actual.should.be.an.instanceOf(Match);
+        const cleaned = utils.astCleaner.clean(actual.value);
+        cleaned.should.deepEqual(expected);
+      } else if (resultType === "empty") {
+        actual.should.be.an.instanceOf(Empty);
+      } else if (resultType === "skip") {
+        actual.should.be.an.instanceOf(Skip);
+        actual.message.should.equal(expected.message);
+      } else if (resultType === "fault") {
+        actual.should.be.an.instanceOf(Fault);
+        actual.message.should.equal(expected.message);
+      }
     });
   }
 
   const tests = [
-    ["ws-call-simple-args", "ws-call-simple-args"],
-    ["ws-call-no-args", "ws-call-no-args"],
-    ["ws-call", "ws-call"],
-    ["ws-get", "ws-get"],
-    ["ws-default-method", "ws-default-method"],
-    ["ws-call-nested", "ws-call-nested"],
-    [
-      "ws-call-missing-methods",
-      "ws-call-missing-methods",
-      { missingHttpMethods: true }
-    ]
+    // ["ws-call-simple-args", "ws-call-simple-args", "match"],
+    // ["ws-call-no-args", "ws-call-no-args", "match"],
+    // ["ws-call", "ws-call", "match"],
+    // ["ws-get", "ws-get", "match"],
+    // ["ws-default-method", "ws-default-method", "match"],
+    // ["ws-call-nested", "ws-call-nested", "match"],
+    // [
+    //   "ws-call-missing-methods",
+    //   "ws-call-missing-methods",
+    //   "match",
+    //   { missingHttpMethods: true }
+    // ],
+    ["ws-call-error", "ws-call-error", "fault"],
+    ["non-specific-write-error", "non-specific-write-error", "fault"]
   ].forEach(test => run(test));
 });

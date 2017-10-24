@@ -619,6 +619,12 @@ chimpanzee@^0.0.56:
   dependencies:
     lazily "0.0.17"
 
+chimpanzee@^0.0.61:
+  version "0.0.61"
+  resolved "https://registry.yarnpkg.com/chimpanzee/-/chimpanzee-0.0.61.tgz#9bf228174b5581cd964440b8a77088b2116d3c57"
+  dependencies:
+    lazily "0.0.17"
+
 commander@2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
@@ -728,13 +734,20 @@ is-finite@^1.0.0:
   dependencies:
     number-is-nan "^1.0.0"
 
+isotropy-analyzer-errors@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/isotropy-analyzer-errors/-/isotropy-analyzer-errors-0.0.5.tgz#544feb186e2d1814b63ef53ccb6600a6f6bc0676"
+  dependencies:
+    chimpanzee "^0.0.61"
+    isotropy-analyzer-utils "^0.0.1"
+
 isotropy-analyzer-utils@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isotropy-analyzer-utils/-/isotropy-analyzer-utils-0.0.1.tgz#993efbcc5e257641f233581ff06273f65ffdaa93"
 
-isotropy-plugin-dev-utils@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/isotropy-plugin-dev-utils/-/isotropy-plugin-dev-utils-0.0.1.tgz#0fd429213c9a86cecfb0c877ebf247267b47ec91"
+isotropy-plugin-dev-utils@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/isotropy-plugin-dev-utils/-/isotropy-plugin-dev-utils-0.0.6.tgz#e7073ffd769f32b8fab7507447227842219d349f"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
