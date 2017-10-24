@@ -1,6 +1,6 @@
 {
   "name": "isotropy-ast-analyzer-webservices",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Web Services AST Analyzer for the Isotropy Project",
   "author": "Isotropy Team<isotropy@agilehead.com>",
   "contributors": [
