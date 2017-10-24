@@ -9,6 +9,7 @@
   ],
   "main": "dist/index.js",
   "scripts": {
+    "build": "./build.sh",
     "test": "mocha dist/test/test.js",
     "debug": "mocha dist/test/test.js --inspect-brk"
   },

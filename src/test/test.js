@@ -90,19 +90,17 @@ describe("isotropy-ast-analyzer-webservices", () => {
   }
 
   const tests = [
-    // ["ws-call-simple-args", "ws-call-simple-args", "match"],
-    // ["ws-call-no-args", "ws-call-no-args", "match"],
-    // ["ws-call", "ws-call", "match"],
-    // ["ws-get", "ws-get", "match"],
-    // ["ws-default-method", "ws-default-method", "match"],
-    // ["ws-call-nested", "ws-call-nested", "match"],
-    // [
-    //   "ws-call-missing-methods",
-    //   "ws-call-missing-methods",
-    //   "match",
-    //   { missingHttpMethods: true }
-    // ],
-    ["ws-call-error", "ws-call-error", "fault"],
-    ["non-specific-write-error", "non-specific-write-error", "fault"]
+    ["ws-call-simple-args", "ws-call-simple-args", "match"],
+    ["ws-call-no-args", "ws-call-no-args", "match"],
+    ["ws-call", "ws-call", "match"],
+    ["ws-get", "ws-get", "match"],
+    ["ws-default-method", "ws-default-method", "match"],
+    ["ws-call-nested", "ws-call-nested", "match"],
+    [
+      "ws-call-missing-methods",
+      "ws-call-missing-methods",
+      "match",
+      { missingHttpMethods: true }
+    ],
   ].forEach(test => run(test));
 });
