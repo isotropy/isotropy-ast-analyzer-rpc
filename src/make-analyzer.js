@@ -6,7 +6,7 @@ export default function makeAnalyzer(schemas, path, state, analysisState) {
     .map(schema => schema(state, analysisState))
     .map(schema => match(schema, path))
     .first(
-      (x, i) => (() => { debugger; })() ||
+      (x, i) =>
         x instanceof Match || x instanceof Fault || i === schemas.length - 1
     );
 }

@@ -72,7 +72,6 @@ describe("isotropy-ast-analyzer-webservices", () => {
       const expected = require(`./fixtures/${dir}/expected`);
       const result = callWrapper();
       const actual = result.analysis;
-      console.log("ACT", actual);
       if (resultType === "match") {
         actual.should.be.an.instanceOf(Match);
         const cleaned = utils.astCleaner.clean(actual.value);
@@ -90,18 +89,17 @@ describe("isotropy-ast-analyzer-webservices", () => {
   }
 
   const tests = [
-    // ["ws-call-simple-args", "ws-call-simple-args", "match"],
-    // ["ws-call-no-args", "ws-call-no-args", "match"],
-    // ["ws-call", "ws-call", "match"],
-    // ["ws-get", "ws-get", "match"],
-    // ["ws-default-method", "ws-default-method", "match"],
-    // ["ws-call-nested", "ws-call-nested", "match"],
-    // [
-    //   "ws-call-missing-methods",
-    //   "ws-call-missing-methods",
-    //   "match",
-    //   { missingHttpMethods: true }
-    // ],
-    ["non-specific-read-error", "non-specific-read-error", "fault"]
+    ["ws-call-simple-args", "ws-call-simple-args", "match"],
+    ["ws-call-no-args", "ws-call-no-args", "match"],
+    ["ws-call", "ws-call", "match"],
+    ["ws-get", "ws-get", "match"],
+    ["ws-default-method", "ws-default-method", "match"],
+    ["ws-call-nested", "ws-call-nested", "match"],
+    [
+      "ws-call-missing-methods",
+      "ws-call-missing-methods",
+      "match",
+      { missingHttpMethods: true }
+    ],
   ].forEach(test => run(test));
 });
