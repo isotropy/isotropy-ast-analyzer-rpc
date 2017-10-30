@@ -11,6 +11,8 @@ import {
 import { source, composite, clean } from "isotropy-analyzer-utils";
 import root from "./root";
 
+export { default as root } from "./root";
+
 export function memberExpression(state, analysisState) {
   return composite(
     {

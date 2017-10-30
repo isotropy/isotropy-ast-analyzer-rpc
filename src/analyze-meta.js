@@ -47,6 +47,7 @@ export default function(analysisState) {
                             binding
                           }
                         );
+                        debugger;
                         return true;
                       })();
                 })();
